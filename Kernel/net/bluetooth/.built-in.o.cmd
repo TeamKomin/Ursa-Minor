@@ -1,1 +1,0 @@
-cmd_net/bluetooth/built-in.o :=  /opt/toolchains/arm-2010.09/bin/arm-none-eabi-ld -EL    -r -o net/bluetooth/built-in.o net/bluetooth/bluetooth.o net/bluetooth/l2cap.o net/bluetooth/sco.o net/bluetooth/rfcomm/built-in.o 

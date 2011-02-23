@@ -1,1 +1,0 @@
-cmd_drivers/video/samsung/built-in.o :=  /opt/toolchains/arm-2010.09/bin/arm-none-eabi-ld -EL    -r -o drivers/video/samsung/built-in.o drivers/video/samsung/s3cfb.o drivers/video/samsung/s3cfb_fimd6x.o drivers/video/samsung/s3cfb_tl2796.o drivers/video/samsung/s6e63m0.o drivers/video/samsung/s3cfb_mdnie.o drivers/video/samsung/s3cfb_ielcd.o 

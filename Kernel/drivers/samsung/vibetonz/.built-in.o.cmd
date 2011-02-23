@@ -1,1 +1,0 @@
-cmd_drivers/samsung/vibetonz/built-in.o :=  rm -f drivers/samsung/vibetonz/built-in.o; /opt/toolchains/arm-2010.09/bin/arm-none-eabi-ar rcs drivers/samsung/vibetonz/built-in.o
