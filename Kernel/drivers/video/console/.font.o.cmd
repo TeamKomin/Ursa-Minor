@@ -1,0 +1,1 @@
+cmd_drivers/video/console/font.o := /opt/toolchains/arm-2010.09/bin/arm-none-eabi-ld -EL    -r -o drivers/video/console/font.o drivers/video/console/fonts.o drivers/video/console/font_8x8.o drivers/video/console/font_8x16.o 

@@ -1,0 +1,1 @@
+cmd_drivers/samsung/vibetonz/vibrator.ko := /opt/toolchains/arm-2010.09/bin/arm-none-eabi-ld -EL -r  -T /media/Dev/source/Ursa-Minor/Kernel/scripts/module-common.lds --build-id -o drivers/samsung/vibetonz/vibrator.ko drivers/samsung/vibetonz/vibrator.o drivers/samsung/vibetonz/vibrator.mod.o

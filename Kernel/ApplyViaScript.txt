@@ -1,0 +1,2 @@
+copy all patch files and ext4patch.sh to /kernel
+run ext4patch.sh

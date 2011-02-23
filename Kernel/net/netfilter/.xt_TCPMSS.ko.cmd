@@ -1,0 +1,1 @@
+cmd_net/netfilter/xt_TCPMSS.ko := /opt/toolchains/arm-2010.09/bin/arm-none-eabi-ld -EL -r  -T /media/Dev/source/Ursa-Minor/Kernel/scripts/module-common.lds --build-id -o net/netfilter/xt_TCPMSS.ko net/netfilter/xt_TCPMSS.o net/netfilter/xt_TCPMSS.mod.o

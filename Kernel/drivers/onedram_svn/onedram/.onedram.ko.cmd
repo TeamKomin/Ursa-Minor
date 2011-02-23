@@ -1,0 +1,1 @@
+cmd_drivers/onedram_svn/onedram/onedram.ko := /opt/toolchains/arm-2010.09/bin/arm-none-eabi-ld -EL -r  -T /media/Dev/source/Ursa-Minor/Kernel/scripts/module-common.lds --build-id -o drivers/onedram_svn/onedram/onedram.ko drivers/onedram_svn/onedram/onedram.o drivers/onedram_svn/onedram/onedram.mod.o

@@ -1,0 +1,1 @@
+cmd_drivers/onedram_svn/modemctl/modemctl.ko := /opt/toolchains/arm-2010.09/bin/arm-none-eabi-ld -EL -r  -T /media/Dev/source/Ursa-Minor/Kernel/scripts/module-common.lds --build-id -o drivers/onedram_svn/modemctl/modemctl.ko drivers/onedram_svn/modemctl/modemctl.o drivers/onedram_svn/modemctl/modemctl.mod.o

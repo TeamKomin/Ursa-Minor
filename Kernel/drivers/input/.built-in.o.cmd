@@ -1,0 +1,1 @@
+cmd_drivers/input/built-in.o :=  /opt/toolchains/arm-2010.09/bin/arm-none-eabi-ld -EL    -r -o drivers/input/built-in.o drivers/input/input-core.o drivers/input/mousedev.o drivers/input/evdev.o drivers/input/keyboard/built-in.o drivers/input/touchscreen/built-in.o drivers/input/misc/built-in.o 

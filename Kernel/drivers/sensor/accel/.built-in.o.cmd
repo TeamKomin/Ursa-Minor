@@ -1,0 +1,1 @@
+cmd_drivers/sensor/accel/built-in.o :=  /opt/toolchains/arm-2010.09/bin/arm-none-eabi-ld -EL    -r -o drivers/sensor/accel/built-in.o drivers/sensor/accel/smb_i2c.o drivers/sensor/accel/smb380.o drivers/sensor/accel/smb_acc.o drivers/sensor/accel/smb380calib.o 
