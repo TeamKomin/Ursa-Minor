@@ -1,1 +1,0 @@
-cmd_drivers/onedram_svn/svnet/svnet.ko := /opt/toolchains/arm-2010.09/bin/arm-none-eabi-ld -EL -r  -T /media/Dev/source/Ursa-Minor/Kernel/scripts/module-common.lds --build-id -o drivers/onedram_svn/svnet/svnet.ko drivers/onedram_svn/svnet/svnet.o drivers/onedram_svn/svnet/svnet.mod.o

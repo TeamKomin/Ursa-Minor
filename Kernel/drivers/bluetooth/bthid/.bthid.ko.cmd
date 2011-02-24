@@ -1,1 +1,0 @@
-cmd_drivers/bluetooth/bthid/bthid.ko := /opt/toolchains/arm-2010.09/bin/arm-none-eabi-ld -EL -r  -T /media/Dev/source/Ursa-Minor/Kernel/scripts/module-common.lds --build-id -o drivers/bluetooth/bthid/bthid.ko drivers/bluetooth/bthid/bthid.o drivers/bluetooth/bthid/bthid.mod.o
