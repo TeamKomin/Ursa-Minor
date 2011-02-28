@@ -1,1 +1,0 @@
-cmd_fs/jbd/jbd.ko := /home/mxracer/CodeSourcery/Sourcery_G++_Lite/bin/arm-none-eabi-ld -EL -r  -T /home/mxracer/Ursa-Minor/Kernel/scripts/module-common.lds --build-id -o fs/jbd/jbd.ko fs/jbd/jbd.o fs/jbd/jbd.mod.o

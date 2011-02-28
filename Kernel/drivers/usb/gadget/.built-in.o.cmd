@@ -1,1 +1,0 @@
-cmd_drivers/usb/gadget/built-in.o :=  /home/mxracer/CodeSourcery/Sourcery_G++_Lite/bin/arm-none-eabi-ld -EL    -r -o drivers/usb/gadget/built-in.o drivers/usb/gadget/s3c_udc_otg.o drivers/usb/gadget/g_android.o 

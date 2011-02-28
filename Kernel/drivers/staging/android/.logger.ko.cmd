@@ -1,1 +1,0 @@
-cmd_drivers/staging/android/logger.ko := /home/mxracer/CodeSourcery/Sourcery_G++_Lite/bin/arm-none-eabi-ld -EL -r  -T /home/mxracer/Ursa-Minor/Kernel/scripts/module-common.lds --build-id -o drivers/staging/android/logger.ko drivers/staging/android/logger.o drivers/staging/android/logger.mod.o

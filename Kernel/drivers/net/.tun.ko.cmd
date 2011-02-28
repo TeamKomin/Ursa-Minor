@@ -1,1 +1,0 @@
-cmd_drivers/net/tun.ko := /home/mxracer/CodeSourcery/Sourcery_G++_Lite/bin/arm-none-eabi-ld -EL -r  -T /home/mxracer/Ursa-Minor/Kernel/scripts/module-common.lds --build-id -o drivers/net/tun.ko drivers/net/tun.o drivers/net/tun.mod.o

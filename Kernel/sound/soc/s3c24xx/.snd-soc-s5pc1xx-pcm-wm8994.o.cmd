@@ -1,1 +1,0 @@
-cmd_sound/soc/s3c24xx/snd-soc-s5pc1xx-pcm-wm8994.o := /home/mxracer/CodeSourcery/Sourcery_G++_Lite/bin/arm-none-eabi-ld -EL    -r -o sound/soc/s3c24xx/snd-soc-s5pc1xx-pcm-wm8994.o sound/soc/s3c24xx/s5pc1xx-pcm-wm8994.o 

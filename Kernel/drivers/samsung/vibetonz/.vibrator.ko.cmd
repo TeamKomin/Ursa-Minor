@@ -1,1 +1,0 @@
-cmd_drivers/samsung/vibetonz/vibrator.ko := /home/mxracer/CodeSourcery/Sourcery_G++_Lite/bin/arm-none-eabi-ld -EL -r  -T /home/mxracer/Ursa-Minor/Kernel/scripts/module-common.lds --build-id -o drivers/samsung/vibetonz/vibrator.ko drivers/samsung/vibetonz/vibrator.o drivers/samsung/vibetonz/vibrator.mod.o
