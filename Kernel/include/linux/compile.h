@@ -1,7 +1,7 @@
-/* This file is auto generated, version 4 */
+/* This file is auto generated, version 5 */
 #define UTS_MACHINE "arm"
-#define UTS_VERSION "#4 Mon Feb 28 14:59:27 EST 2011"
-#define LINUX_COMPILE_TIME "14:59:27"
+#define UTS_VERSION "#5 Mon Feb 28 16:53:15 EST 2011"
+#define LINUX_COMPILE_TIME "16:53:15"
 #define LINUX_COMPILE_BY "UrsaMinor"
 #define LINUX_COMPILE_HOST ""
 #define LINUX_COMPILE_DOMAIN "esoftinc.net"

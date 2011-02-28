@@ -1,0 +1,42 @@
+Based on GT-i9010 JL1 Armani source
+Boosted in call volume
+Applied hardcore's mic bias tweaks
+Wifi and Camera drivers ported from JPX (thanks chrisryn)
+Jhash updated to jhas3
+Lowmemorykiller patched and upgraded from http://android.git.kernel.org/?p=ker...3cbfcb015577a9
+ext4 patched and upgraded from http://www2.kernel.org/pub/linux/ker.../ext4-patches/
+Kernel hz set to 100 
+Tiny RCU patched and upgraded from http://android.git.kernel.org/?p=ker...90160a18caf95d
+Supercurio's voodoo lagfix and sound v4 built in
+Neldar's backlighnotification 2.3 built in from https://github.com/project-voodoo/ba...ernel_patches/
+Compiled using codesourcery 2010.09: Faster and more battery efficient
+Android_Logger (Logcat) disabled by default - enable via adb and insmod
+Optimized compiler flags: -O2 -mcpu=cortex-a8 -mfpu=neon -mfloat-abi=softfp
+
+
+Memory configs:
+
+CONFIG_ANDROID_PMEM_MEMSIZE_PMEM=2048
+CONFIG_ANDROID_PMEM_MEMSIZE_PMEM_GPU1=4096
+CONFIG_ANDROID_PMEM_MEMSIZE_PMEM_ADSP=1500
+CONFIG_WLAN_SAMSUNG_MEMSIZE_BCM=256
+CONFIG_VIDEO_SAMSUNG_MEMSIZE_FIMC0=12288
+CONFIG_VIDEO_SAMSUNG_MEMSIZE_FIMC1=1024
+CONFIG_VIDEO_SAMSUNG_MEMSIZE_FIMC2=12288
+CONFIG_VIDEO_SAMSUNG_MEMSIZE_MFC0=32768
+CONFIG_VIDEO_SAMSUNG_MEMSIZE_MFC1=32768
+CONFIG_VIDEO_SAMSUNG_MEMSIZE_TEXSTREAM=10240
+CONFIG_VIDEO_SAMSUNG_MEMSIZE_FIMD=3072
+
+Thanks to:
+supercurio
+chrisryn
+existz
+xcaliburinhand
+hardcore
+
+for either the help with source or the help with questions. 
+
+If we've missed anyone we apologize and will add you if you let us know.
+
+
