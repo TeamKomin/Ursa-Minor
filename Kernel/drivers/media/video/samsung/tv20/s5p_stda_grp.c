@@ -610,9 +610,11 @@ int s5ptvfb_set_par(struct fb_info *fb)
 #endif
 	}
 
-	(s5ptv_status.fb->var).bits_per_pixel =
+	(s5ptv_status.fb->var).bits_per_pixel = ((struct fb_var_screeninfo) (fb->var)).bits_per_pixel;
+	
+/*	((struct fb_var_screeninfo) (s5ptv_status.fb->var)).bits_per_pixel =
 		((struct fb_var_screeninfo) (fb->var)).bits_per_pixel;
-
+*/
 	s5ptvfb_set_display_mode(&s5ptv_status);
 
 	s5ptvfb_set_window_control(&s5ptv_status,win->id);

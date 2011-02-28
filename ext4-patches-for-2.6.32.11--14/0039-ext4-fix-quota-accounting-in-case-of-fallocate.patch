@@ -1,0 +1,32 @@
+From d78ad0e9eb979028bf3ea6d2506a42d217fc96df Mon Sep 17 00:00:00 2001
+From: Dmitry Monakhov <dmonakhov@openvz.org>
+Date: Sun, 16 May 2010 00:00:00 -0400
+Subject: [PATCH 39/57] ext4: fix quota accounting in case of fallocate
+
+commit 35121c9860316d7799cea0fbc359a9186e7c2747 upstream (as of v2.6.34-git13)
+
+allocated_meta_data is already included in 'used' variable.
+
+Signed-off-by: Dmitry Monakhov <dmonakhov@openvz.org>
+Signed-off-by: "Theodore Ts'o" <tytso@mit.edu>
+---
+ fs/ext4/inode.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 45e6961..fc06fcd 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1149,7 +1149,8 @@ void ext4_da_update_reserve_space(struct inode *inode,
+ 		 */
+ 		if (allocated_meta_blocks)
+ 			vfs_dq_claim_block(inode, allocated_meta_blocks);
+-		vfs_dq_release_reservation_block(inode, mdb_free + used);
++		vfs_dq_release_reservation_block(inode, mdb_free + used -
++						allocated_meta_blocks);
+ 	}
+ 
+ 	/*
+-- 
+1.6.6.1.1.g974db.dirty
+

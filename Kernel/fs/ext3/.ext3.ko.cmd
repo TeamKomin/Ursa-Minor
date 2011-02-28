@@ -1,0 +1,1 @@
+cmd_fs/ext3/ext3.ko := /home/mxracer/CodeSourcery/Sourcery_G++_Lite/bin/arm-none-eabi-ld -EL -r  -T /home/mxracer/Ursa-Minor/Kernel/scripts/module-common.lds --build-id -o fs/ext3/ext3.ko fs/ext3/ext3.o fs/ext3/ext3.mod.o

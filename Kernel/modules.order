@@ -1,8 +1,16 @@
+kernel/fs/ext3/ext3.ko
+kernel/fs/ext2/ext2.ko
+kernel/fs/ext4/ext4.ko
+kernel/fs/jbd/jbd.ko
+kernel/fs/jbd2/jbd2.ko
+kernel/fs/cifs/cifs.ko
+kernel/fs/jfs/jfs.ko
 kernel/drivers/scsi/scsi_wait_scan.ko
 kernel/drivers/net/wireless/bcm4329/dhd.ko
+kernel/drivers/net/tun.ko
 kernel/drivers/bluetooth/bthid/bthid.ko
+kernel/drivers/staging/android/logger.ko
 kernel/drivers/onedram_svn/modemctl/modemctl.ko
 kernel/drivers/onedram_svn/onedram/onedram.ko
 kernel/drivers/onedram_svn/svnet/svnet.ko
 kernel/drivers/samsung/vibetonz/vibrator.ko
-kernel/net/netfilter/xt_TCPMSS.ko

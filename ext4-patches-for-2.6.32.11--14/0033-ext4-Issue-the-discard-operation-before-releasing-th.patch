@@ -1,0 +1,62 @@
+From bad12e5d00b004874030988352eacf41f1397b64 Mon Sep 17 00:00:00 2001
+From: Theodore Ts'o <tytso@mit.edu>
+Date: Tue, 20 Apr 2010 16:51:59 -0400
+Subject: [PATCH 33/57] ext4: Issue the discard operation *before* releasing the blocks to be reused
+
+commit b90f687018e6d6c77d981b09203780f7001407e5 upstream (as of v2.6.34-rc6)
+
+Otherwise, we can end up having data corruption because the blocks
+could get reused and then discarded!
+
+https://bugzilla.kernel.org/show_bug.cgi?id=15579
+
+Signed-off-by: "Theodore Ts'o" <tytso@mit.edu>
+---
+ fs/ext4/mballoc.c |   24 +++++++++++-------------
+ 1 files changed, 11 insertions(+), 13 deletions(-)
+
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 8216789..65c2b79 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -2537,6 +2537,17 @@ static void release_blocks_on_commit(journal_t *journal, transaction_t *txn)
+ 		mb_debug(1, "gonna free %u blocks in group %u (0x%p):",
+ 			 entry->count, entry->group, entry);
+ 
++		if (test_opt(sb, DISCARD)) {
++			ext4_fsblk_t discard_block;
++
++			discard_block = entry->start_blk +
++				ext4_group_first_block_no(sb, entry->group);
++			trace_ext4_discard_blocks(sb,
++					(unsigned long long)discard_block,
++					entry->count);
++			sb_issue_discard(sb, discard_block, entry->count);
++		}
++
+ 		err = ext4_mb_load_buddy(sb, entry->group, &e4b);
+ 		/* we expect to find existing buddy because it's pinned */
+ 		BUG_ON(err != 0);
+@@ -2558,19 +2569,6 @@ static void release_blocks_on_commit(journal_t *journal, transaction_t *txn)
+ 			page_cache_release(e4b.bd_bitmap_page);
+ 		}
+ 		ext4_unlock_group(sb, entry->group);
+-		if (test_opt(sb, DISCARD)) {
+-			ext4_fsblk_t discard_block;
+-			struct ext4_super_block *es = EXT4_SB(sb)->s_es;
+-
+-			discard_block = (ext4_fsblk_t)entry->group *
+-						EXT4_BLOCKS_PER_GROUP(sb)
+-					+ entry->start_blk
+-					+ le32_to_cpu(es->s_first_data_block);
+-			trace_ext4_discard_blocks(sb,
+-					(unsigned long long)discard_block,
+-					entry->count);
+-			sb_issue_discard(sb, discard_block, entry->count);
+-		}
+ 		kmem_cache_free(ext4_free_ext_cachep, entry);
+ 		ext4_mb_release_desc(&e4b);
+ 	}
+-- 
+1.6.6.1.1.g974db.dirty
+

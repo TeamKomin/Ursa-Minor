@@ -20,6 +20,7 @@
 #include <mach/regs-clock.h> 
 #include <mach/gpio.h> 
 #include "wm8994.h"
+#include "wm8994_voodoo.h"
 
 //------------------------------------------------
 //		Debug Feature
@@ -51,12 +52,12 @@
 // Normal
 // Speaker
 #define TUNING_MP3_SPKL_VOL		0x3E		// 26h
-#define TUNING_MP3_CLASSD_VOL		0x5		// 25h
+#define TUNING_MP3_CLASSD_VOL		0x6 //0x5		// 25h //boost speaker volume
 
 // Headset
-#define TUNING_MP3_OUTPUTL_VOL		0x33    // 0x2F		// 1Ch
-#define TUNING_MP3_OUTPUTR_VOL 	0x33    //  0x2F		// 1Dh
-#define TUNING_MP3_OPGAL_VOL		0x39		// 20h
+#define TUNING_MP3_OUTPUTL_VOL		0x33    // 0x2F		// 1Ch //boost headphone out for media playback
+#define TUNING_MP3_OUTPUTR_VOL 		0x33    //  0x2F		// 1Dh
+#define TUNING_MP3_OPGAL_VOL		0x39		// 20h //maximize mixer gain
 #define TUNING_MP3_OPGAR_VOL		0x39		// 21h
 
 // Dual
@@ -101,12 +102,12 @@
 // Receiver
 #define TUNING_RCV_OUTMIX5_VOL		0x0		// 31h
 #define TUNING_RCV_OUTMIX6_VOL 		0x0		// 32h
-#define TUNING_RCV_OPGAL_VOL		0x36		// 20h
-#define TUNING_RCV_OPGAR_VOL		0x36		// 21h
+#define TUNING_RCV_OPGAL_VOL		0x3F 	//0x36		// 20h //boost earpiece volume during calls
+#define TUNING_RCV_OPGAR_VOL		0x3F	//0x36		// 21h
 #define TUNING_HPOUT2_VOL		0x0		// 1Fh
 
 // Call Main MIC
-#define TUNING_CALL_RCV_INPUTMIX_VOL	0x16		// 18h
+#define TUNING_CALL_RCV_INPUTMIX_VOL	0x14	//0x16		// 18h //reduce mic level during calls too
 #define TUNING_CALL_RCV_MIXER_VOL	WM8994_IN1L_MIXINL_VOL	// 29h 30dB
 
 #define TUNING_CALL_SPK_INPUTMIX_VOL	0x0D		// 18h
@@ -125,7 +126,7 @@
 #define TUNING_FMRADIO_OUTPUTL_VOL	0x3C		// 1Ch
 #define TUNING_FMRADIO_OUTPUTR_VOL	0x3C		// 1Dh
 #define TUNING_FMRADIO_OPGAL_VOL	0x39		// 20h
-#define TUNING_FMRADIO_OPGAR_VOL	0x39		// 21h
+#define TUNING_FMRADIO_OPGAR_VOL	0x39		// 21h //maximize mixer gain
 
 //Input
 #define TUNING_DAC1L_RADIO_VOL		0xA8		// 402h
@@ -136,8 +137,8 @@
 #define TUNING_DUAL_DAC1R_RADIO_VOL		0x70		// 403h
 
 // FM Radio Input
-#define TUNING_FMRADIO_EAR_INPUTMIXL_VOL	0x0B		// 19h
-#define TUNING_FMRADIO_EAR_INPUTMIXR_VOL	0x0B		// 1Bh
+#define TUNING_FMRADIO_EAR_INPUTMIXL_VOL	0x0F //0x0B		// 19h //boost fm radio input
+#define TUNING_FMRADIO_EAR_INPUTMIXR_VOL	0x0F //0x0B		// 1Bh
 
 #define TUNING_FMRADIO_SPK_INPUTMIXL_VOL	0x0F		// 19h
 #define TUNING_FMRADIO_SPK_INPUTMIXR_VOL	0x0F		// 1Bh
@@ -145,7 +146,7 @@
 //------------------------------------------------
 // Recording
 // Main MIC
-#define TUNING_RECORD_MAIN_INPUTLINE_VOL	0x16		// 18h
+#define TUNING_RECORD_MAIN_INPUTLINE_VOL	0x12 	//0x16	// 18h //reduce mic level during recording to fix
 #define TUNING_RECORD_MAIN_AIF1ADCL_VOL	0xC0		// 400h
 #define TUNING_RECORD_MAIN_AIF1ADCR_VOL	0xC0		// 401h
 
@@ -1139,6 +1140,10 @@ void wm8994_record_main_mic(struct snd_soc_codec *codec)
 		wm8994_write(codec, WM8994_AIF1_ADC1_RIGHT_VOLUME, val);
 	}
 
+#ifdef CONFIG_SND_VOODOO_RECORD_PRESETS
+	voodoo_hook_record_main_mic();
+#endif
+
 	val = wm8994_read(codec,WM8994_POWER_MANAGEMENT_4 );
 	val &= ~(WM8994_ADCL_ENA_MASK |WM8994_AIF1ADC1L_ENA_MASK  );
 	val |= ( WM8994_AIF1ADC1L_ENA | WM8994_ADCL_ENA );
@@ -1551,6 +1556,10 @@ void wm8994_set_playback_headset(struct snd_soc_codec *codec)
 	val &= ~(WM8994_DAC1R_MUTE_MASK | WM8994_DAC1R_VOL_MASK);
 	val |= TUNING_DAC1R_VOL; //0 db volume	
 	wm8994_write(codec,WM8994_DAC1_RIGHT_VOLUME,val);	
+
+#ifdef CONFIG_SND_VOODOO
+	voodoo_hook_playback_headset();
+#endif
 	
 	// Unmute the AF1DAC1	
 	val = wm8994_read(codec, WM8994_AIF1_DAC1_FILTERS_1 ); 	
@@ -2730,6 +2739,9 @@ void wm8994_set_fmradio_common(struct snd_soc_codec *codec, int onoff)
 			wm8994_write(codec, WM8994_INPUT_MIXER_4, val);	
 		}
 	}		
+#ifdef CONFIG_SND_VOODOO_FM
+	voodoo_hook_fmradio_headset();
+#endif
 }
 
 void wm8994_set_fmradio_headset(struct snd_soc_codec *codec)
@@ -2981,6 +2993,10 @@ void wm8994_set_fmradio_headset(struct snd_soc_codec *codec)
 
 	//DAC1 Unmute
 	wm8994_write(codec, WM8994_AIF1_DAC1_FILTERS_1, 0x0000);
+
+#ifdef CONFIG_SND_VOODOO_FM
+	voodoo_hook_fmradio_headset();
+#endif
 
 	val = wm8994_read(codec, WM8994_AIF2_DAC_FILTERS_1);	//520 : 0
 	val &= ~(WM8994_AIF2DAC_MUTE_MASK);
@@ -3237,6 +3253,10 @@ void wm8994_set_fmradio_headset_mix(struct snd_soc_codec *codec)
 		val |= (WM8994_DAC1_VU | TUNING_DAC1L_VOL); 
 		wm8994_write(codec,WM8994_DAC1_LEFT_VOLUME ,val);
 		
+#ifdef CONFIG_SND_VOODOO_FM
+	voodoo_hook_fmradio_headset();
+#endif
+
 		//Unmute and volume ctrl RightDAC
 		val = wm8994_read(codec, WM8994_DAC1_RIGHT_VOLUME ); 
 		val &= ~(WM8994_DAC1R_MUTE_MASK | WM8994_DAC1R_VOL_MASK);
@@ -3579,6 +3599,10 @@ void wm8994_set_fmradio_speaker_headset_mix(struct snd_soc_codec *codec)
 	wm8994_write(codec,WM8994_DC_SERVO_1, val );
 
 	msleep(20);
+
+#ifdef CONFIG_SND_VOODOO_FM
+	voodoo_hook_fmradio_headset();
+#endif
 
 	//* Headphone Output
 		// Intermediate HP settings

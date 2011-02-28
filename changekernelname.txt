@@ -1,0 +1,5 @@
+ what i do is edit /scripts/mkcompile_h ....where it says LINUX_COMPILE_BY  and  LINUX_COMPILE_HOST change it to look like this
+echo \#define LINUX_COMPILE_BY \"`echo SuckerPunch-Voodoo`\"
+echo \#define LINUX_COMPILE_HOST \"``\"
+the LINUX_COMPILE_BY is the username part of (username@machinename) and the LINUX_COMPILE_HOST  is the machinename of (username@machinename)...so changing the COMPILE_BY  to whatever you want it to show as, the changing the COMPILE_HOST to blank, make sure to have it as  \"``\"
+that will take out the @machinename 

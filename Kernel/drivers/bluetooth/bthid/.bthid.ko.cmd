@@ -1,0 +1,1 @@
+cmd_drivers/bluetooth/bthid/bthid.ko := /home/mxracer/CodeSourcery/Sourcery_G++_Lite/bin/arm-none-eabi-ld -EL -r  -T /home/mxracer/Ursa-Minor/Kernel/scripts/module-common.lds --build-id -o drivers/bluetooth/bthid/bthid.ko drivers/bluetooth/bthid/bthid.o drivers/bluetooth/bthid/bthid.mod.o

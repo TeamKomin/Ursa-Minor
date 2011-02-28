@@ -1,0 +1,1 @@
+cmd_drivers/media/video/samsung/g2d/built-in.o :=  /home/mxracer/CodeSourcery/Sourcery_G++_Lite/bin/arm-none-eabi-ld -EL    -r -o drivers/media/video/samsung/g2d/built-in.o drivers/media/video/samsung/g2d/fimg2d3x.o 

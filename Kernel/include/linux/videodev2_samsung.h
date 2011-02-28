@@ -16,6 +16,7 @@
 #ifndef __LINUX_VIDEODEV2_SAMSUNG_H
 #define __LINUX_VIDEODEV2_SAMSUNG_H
 
+
 /* Values for 'capabilities' field */
 /* Object detection device */
 #define V4L2_CAP_OBJ_RECOGNITION	0x10000000
@@ -313,6 +314,7 @@ enum v4l2_vintage_mode {
 #define V4L2_CID_CAMERA_GPS_TIMESTAMP	(V4L2_CID_CAMERA_CLASS_BASE + 32)//(V4L2_CID_PRIVATE_BASE+88)
 #define V4L2_CID_CAMERA_GPS_ALTITUDE		(V4L2_CID_CAMERA_CLASS_BASE + 33)//(V4L2_CID_PRIVATE_BASE+89)
 #define V4L2_CID_CAMERA_EXIF_TIME_INFO	(V4L2_CID_CAMERA_CLASS_BASE + 34)
+#define V4L2_CID_CAMERA_GPS_PROCESSINGMETHOD                     (V4L2_CID_CAMERA_CLASS_BASE+35)
 #define V4L2_CID_CAMERA_ZOOM				(V4L2_CID_PRIVATE_BASE+90)
 enum v4l2_zoom_level {
 	ZOOM_LEVEL_0 = 0,
@@ -469,6 +471,8 @@ enum v4l2_slow_ae_mode{
 #if defined(CONFIG_ARIES_NTT) // Modify NTTS1
 #define V4L2_CID_CAMERA_AE_AWB_DISABLE_LOCK					(V4L2_CID_PRIVATE_BASE+114)
 #endif
+
+#define V4L2_CID_CAMERA_THUMBNAIL_NULL                                  (V4L2_CID_PRIVATE_BASE+115)
 
 /*      Pixel format FOURCC depth  Description  */
 /* 12  Y/CbCr 4:2:0 64x32 macroblocks */

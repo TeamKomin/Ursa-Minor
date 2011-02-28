@@ -1,0 +1,1 @@
+cmd_usr/initramfs_data.cpio.lzma := /bin/sh /home/mxracer/Ursa-Minor/Kernel/scripts/gen_initramfs_list.sh -o usr/initramfs_data.cpio.lzma  -u 0  -g 0  /home/mxracer/src/9010initramfs/full-uncompressed/

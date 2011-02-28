@@ -2,8 +2,8 @@ VERSION = 2
 PATCHLEVEL = 6
 SUBLEVEL = 32
 EXTRAVERSION = .9
-NAME = Man-Eating Seals of Antiquity
-
+NAME = blah@blah
+#
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
 # More info can be located in ./README
@@ -181,7 +181,8 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ \
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
 export KBUILD_BUILDHOST := $(SUBARCH)
 ARCH		?= arm
-CROSS_COMPILE	?= /opt/toolchains/arm-2010.09/bin/arm-none-eabi-
+#CROSS_COMPILE	?= /home/mxracer/arm-2009q3/bin/arm-none-eabi-
+CROSS_COMPILE	?= /home/mxracer/CodeSourcery/Sourcery_G++_Lite/bin/arm-none-eabi-
 
 
 # Architecture as present in compile.h
@@ -222,8 +223,8 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 
 HOSTCC       = gcc
 HOSTCXX      = g++
-HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
-HOSTCXXFLAGS = -O2
+HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer 
+HOSTCXXFLAGS = -O2 -mtthumb -mfloat-abi=softfp -mtune=cortex-a8 -mfpu=neon
 
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
@@ -1221,6 +1222,7 @@ clean: archclean $(clean-dirs)
 		-o -name '*.symtypes' -o -name 'modules.order' \
 		-o -name 'Module.markers' -o -name '.tmp_*.o.*' \
 		-o -name '*.gcno' \) -type f -print | xargs rm -f
+#		\( -wholename './fs/rfs' -o -wholename './drivers/fsr' \) -prune -o \
 
 # mrproper - Delete all generated files, including .config
 #

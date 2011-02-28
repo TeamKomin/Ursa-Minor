@@ -1,0 +1,1 @@
+cmd_drivers/onedram_svn/onedram/onedram.ko := /home/mxracer/CodeSourcery/Sourcery_G++_Lite/bin/arm-none-eabi-ld -EL -r  -T /home/mxracer/Ursa-Minor/Kernel/scripts/module-common.lds --build-id -o drivers/onedram_svn/onedram/onedram.ko drivers/onedram_svn/onedram/onedram.o drivers/onedram_svn/onedram/onedram.mod.o

@@ -1,0 +1,28 @@
+fs/binfmt_aout.c: In function 'load_aout_binary':
+fs/binfmt_aout.c:271:30: error: 'SEGMENT_SIZE' undeclared (first use in this function)
+fs/binfmt_aout.c:271:30: note: each undeclared identifier is reported only once for each function it appears in
+
+FIX :  Update the Makefile:
+
+NOSTDINC_FLAGS += -nostdinc -isystem $(shell $(CC) -print-file-name=include)
+
+==>
+
+NOSTDINC_FLAGS += -nostdinc -isystem $(shell $(CC) -print-file-name=include) -Dlinux
+
+drivers/media/video/samsung/tv20/s5p_stda_grp.c: In function 's5ptvfb_set_par':
+drivers/media/video/samsung/tv20/s5p_stda_grp.c:614:12: error: lvalue required as left operand of assignment
+make[5]: *** [drivers/media/video/samsung/tv20/s5p_stda_grp.o] Error 1
+make[4]: *** [drivers/media/video/samsung/tv20] Error 2
+
+
+FIX: struct fb_var_screeninfo screenInfo;
+	screenInfo = (struct fb_var_screeninfo) (s5ptv_status.fb->var);
+	screenInfo.bits_per_pixel =
+		((struct fb_var_screeninfo) (fb->var)).bits_per_pixel;
+		
+/*	((struct fb_var_screeninfo) (s5ptv_status.fb->var)).bits_per_pixel =
+		((struct fb_var_screeninfo) (fb->var)).bits_per_pixel;
+*/
+
+FROM SPEEDMOD: (s5ptv_status.fb->var).bits_per_pixel = ((struct fb_var_screeninfo) (fb->var)).bits_per_pixel;

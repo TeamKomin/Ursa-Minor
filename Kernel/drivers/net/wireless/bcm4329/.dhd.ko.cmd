@@ -1,0 +1,1 @@
+cmd_drivers/net/wireless/bcm4329/dhd.ko := /home/mxracer/CodeSourcery/Sourcery_G++_Lite/bin/arm-none-eabi-ld -EL -r  -T /home/mxracer/Ursa-Minor/Kernel/scripts/module-common.lds --build-id -o drivers/net/wireless/bcm4329/dhd.ko drivers/net/wireless/bcm4329/dhd.o drivers/net/wireless/bcm4329/dhd.mod.o

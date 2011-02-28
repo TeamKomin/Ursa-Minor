@@ -1,0 +1,49 @@
+From dca8498de4a17889177509de2ae16f06290fd0e3 Mon Sep 17 00:00:00 2001
+From: Yin Kangkai <kangkai.yin@intel.com>
+Date: Tue, 15 Dec 2009 14:48:25 -0800
+Subject: [PATCH 06/57] jbd: jbd-debug and jbd2-debug should be writable
+
+commit 765f8361902d015c864d5e62019b2f139452d7ef upstream (as of v2.6.33-rc2)
+
+jbd-debug and jbd2-debug is currently read-only (S_IRUGO), which is not
+correct. Make it writable so that we can start debuging.
+
+Signed-off-by: Yin Kangkai <kangkai.yin@intel.com>
+Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.vnet.ibm.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+---
+ fs/jbd/journal.c  |    2 +-
+ fs/jbd2/journal.c |    3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/fs/jbd/journal.c b/fs/jbd/journal.c
+index 4160afa..bd224ee 100644
+--- a/fs/jbd/journal.c
++++ b/fs/jbd/journal.c
+@@ -1913,7 +1913,7 @@ static void __init jbd_create_debugfs_entry(void)
+ {
+ 	jbd_debugfs_dir = debugfs_create_dir("jbd", NULL);
+ 	if (jbd_debugfs_dir)
+-		jbd_debug = debugfs_create_u8("jbd-debug", S_IRUGO,
++		jbd_debug = debugfs_create_u8("jbd-debug", S_IRUGO | S_IWUSR,
+ 					       jbd_debugfs_dir,
+ 					       &journal_enable_debug);
+ }
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index b7ca3a9..17af879 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -2115,7 +2115,8 @@ static void __init jbd2_create_debugfs_entry(void)
+ {
+ 	jbd2_debugfs_dir = debugfs_create_dir("jbd2", NULL);
+ 	if (jbd2_debugfs_dir)
+-		jbd2_debug = debugfs_create_u8(JBD2_DEBUG_NAME, S_IRUGO,
++		jbd2_debug = debugfs_create_u8(JBD2_DEBUG_NAME,
++					       S_IRUGO | S_IWUSR,
+ 					       jbd2_debugfs_dir,
+ 					       &jbd2_journal_enable_debug);
+ }
+-- 
+1.6.6.1.1.g974db.dirty
+

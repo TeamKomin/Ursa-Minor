@@ -1,0 +1,36 @@
+From dc2a24fac31c788cb09fcc23331f01739964b0e0 Mon Sep 17 00:00:00 2001
+From: Nikanth Karthikesan <knikanth@suse.de>
+Date: Sun, 16 May 2010 14:00:00 -0400
+Subject: [PATCH 48/57] ext4: Prevent creation of files larger than RLIMIT_FSIZE using fallocate
+
+commit 6d19c42b7cf81c39632b6d4dbc514e8449bcd346 upstream (as of v2.6.34-git13)
+
+Currently using posix_fallocate one can bypass an RLIMIT_FSIZE limit
+and create a file larger than the limit. Add a check for that.
+
+Signed-off-by: Nikanth Karthikesan <knikanth@suse.de>
+Signed-off-by: Amit Arora <aarora@in.ibm.com>
+Signed-off-by: "Theodore Ts'o" <tytso@mit.edu>
+---
+ fs/ext4/extents.c |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index cd4cccc..aca259f 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3607,6 +3607,11 @@ long ext4_fallocate(struct inode *inode, int mode, loff_t offset, loff_t len)
+ 	 */
+ 	credits = ext4_chunk_trans_blocks(inode, max_blocks);
+ 	mutex_lock(&inode->i_mutex);
++	ret = inode_newsize_ok(inode, (len + offset));
++	if (ret) {
++		mutex_unlock(&inode->i_mutex);
++		return ret;
++	}
+ retry:
+ 	while (ret >= 0 && ret < max_blocks) {
+ 		block = block + ret;
+-- 
+1.6.6.1.1.g974db.dirty
+

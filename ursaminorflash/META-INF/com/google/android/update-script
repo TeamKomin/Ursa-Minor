@@ -1,0 +1,5 @@
+show_progress 0.1 0
+copy_dir PACKAGE:updates TMP:/updates
+set_perm 0 0 755 TMP:/updates/redbend_ua
+run_program /tmp/updates/redbend_ua restore /tmp/updates/zImage /dev/block/bml7
+show_progress 0.4 10

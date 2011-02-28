@@ -1,0 +1,1 @@
+cmd_drivers/onedram_svn/svnet/svnet.o := /home/mxracer/CodeSourcery/Sourcery_G++_Lite/bin/arm-none-eabi-ld -EL    -r -o drivers/onedram_svn/svnet/svnet.o drivers/onedram_svn/svnet/main.o drivers/onedram_svn/svnet/pdp.o drivers/onedram_svn/svnet/sipc4.o 

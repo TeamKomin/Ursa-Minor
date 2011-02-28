@@ -1,0 +1,67 @@
+From 5545554aac04918ece318270d63cbfcb015577a9 Mon Sep 17 00:00:00 2001
+From: Rabin Vincent <rabin.vincent@stericsson.com>
+Date: Thu, 9 Sep 2010 10:48:21 +0530
+Subject: [PATCH] lowmemorykiller: don't unregister notifier from atomic context
+
+The lowmemorykiller registers an atomic notifier for notfication of when
+the task is freed.  From this atomic notifier callback, it removes the
+atomic notifier via task_free_unregister().  This is incorrect because
+atomic_notifier_chain_unregister() calls syncronize_rcu(), which can
+sleep, which shouldn't be done from an atomic notifier.
+
+Fix this by registering the notifier during init, and only unregister it
+if the lowmemorykiller is unloaded.
+
+Change-Id: I1577b04e617bc2b2e39dcb490fcfc9ce660eb7ec
+Signed-off-by: Rabin Vincent <rabin.vincent@stericsson.com>
+Signed-off-by: Christian Bejram <christian.bejram@stericsson.com>
+---
+ drivers/staging/android/lowmemorykiller.c |    9 +++++----
+ 1 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/staging/android/lowmemorykiller.c b/drivers/staging/android/lowmemorykiller.c
+index 8b67ac0..efbe556 100644
+--- a/drivers/staging/android/lowmemorykiller.c
++++ b/drivers/staging/android/lowmemorykiller.c
+@@ -71,10 +71,10 @@ static int
+ task_notify_func(struct notifier_block *self, unsigned long val, void *data)
+ {
+ 	struct task_struct *task = data;
+-	if (task == lowmem_deathpending) {
++
++	if (task == lowmem_deathpending)
+ 		lowmem_deathpending = NULL;
+-		task_free_unregister(&task_nb);
+-	}
++
+ 	return NOTIFY_OK;
+ }
+ 
+@@ -168,7 +168,6 @@ static int lowmem_shrink(struct shrinker *s, int nr_to_scan, gfp_t gfp_mask)
+ 			     selected->pid, selected->comm,
+ 			     selected_oom_adj, selected_tasksize);
+ 		lowmem_deathpending = selected;
+-		task_free_register(&task_nb);
+ 		force_sig(SIGKILL, selected);
+ 		rem -= selected_tasksize;
+ 	}
+@@ -185,6 +184,7 @@ static struct shrinker lowmem_shrinker = {
+ 
+ static int __init lowmem_init(void)
+ {
++	task_free_register(&task_nb);
+ 	register_shrinker(&lowmem_shrinker);
+ 	return 0;
+ }
+@@ -192,6 +192,7 @@ static int __init lowmem_init(void)
+ static void __exit lowmem_exit(void)
+ {
+ 	unregister_shrinker(&lowmem_shrinker);
++	task_free_unregister(&task_nb);
+ }
+ 
+ module_param_named(cost, lowmem_shrinker.seeks, int, S_IRUGO | S_IWUSR);
+-- 
+1.7.4
+
+ 
