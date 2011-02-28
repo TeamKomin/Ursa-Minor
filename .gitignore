@@ -36,7 +36,9 @@ backlightnotification
 samsunglogo
 
 #Ignore the flash update dir
-skullcapflash
+ursaminorflash
+
+ursaminorflash.zip
 
 #
 # Top-level generic files
