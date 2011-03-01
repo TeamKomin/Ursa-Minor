@@ -7,7 +7,7 @@ HOW TO BUILD KERNEL 2.6.32 FOR GT-I9010
 3. Change .../Kernel/arch/arm/configs/ga3_eur_defconfig to point to the 9010initramfs/full-uncompressed dir
     where you put the code from above
 
-5. Execute 'make ga3_eur_defconfig'.
+5. If you're building for Captivate, execute 'make aries_captivate_defconfig'. If you're building for the Galaxy S, execute 'make aries_galaxys_defconfig'.
 
 6. Execute 'make' or 'make -j<n>' where '<n>' is the number of multiple jobs to be invoked simultaneously.
 

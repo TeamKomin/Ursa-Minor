@@ -463,7 +463,7 @@ service console /system/bin/sh
     group shell system log
     console
 
-service noplaylogos /system/bin/false
+service playlogos1 /system/bin/playlogos1
     user root
     oneshot
 
@@ -549,11 +549,11 @@ service killmediaserver /system/bin/killmediaserver
     oneshot
 #to prevent lockup issue during poweron/off test
 
-#service bootanim /system/bin/bootanimation
-#    user graphics
-#    group graphics
-#    disabled
-#    oneshot
+service bootanim /system/bin/bootanimation
+    user graphics
+    group graphics
+    disabled
+    oneshot
 
 service wpa_supplicant /system/bin/wpa_supplicant -Dwext -ieth0 -c/data/wifi/bcm_supp.conf
    disabled
