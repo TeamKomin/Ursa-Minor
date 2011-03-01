@@ -2,11 +2,10 @@ HOW TO BUILD KERNEL 2.6.32 FOR GT-I9010
 
 1. Visit http://www.codesourcery.com/, download and install Sourcery G++ Lite 2009q3-68 or 2010.09-51 toolchain for ARM EABI.
 
-2. Extract kernel source and move into the top directory.
+2. git clone kernel source the top directory. i.e. your home dir
 
-3. Extract UrsaMinor_initramfs.tar.gz onto your drive outside of the Kernel dir
-
-4. Change .../Kernel/arch/arm/configs/ga3_eur_defconfig to point to where you extracted initramfs above
+3. Change .../Kernel/arch/arm/configs/ga3_eur_defconfig to point to the 9010initramfs/full-uncompressed dir
+    where you put the code from above
 
 5. Execute 'make ga3_eur_defconfig'.
 
