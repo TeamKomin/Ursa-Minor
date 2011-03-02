@@ -24,7 +24,7 @@
 #define YAMAHA_MSENSOR_TRANSFORMATION    \
     { { 0,  1,  0}, \
       { -1,  0,  0}, \
-      { 0 , 0 , 1} }
+      { 0,  0,  1} }
 #else
 #define YAMAHA_GSENSOR_TRANSFORMATION	\
     { { -1,  0,  0}, \
@@ -34,7 +34,7 @@
 #define YAMAHA_MSENSOR_TRANSFORMATION	\
     { { -1,  0,  0}, \
       {  0,  1,  0}, \
-      { 0 , 0 ,  -1} }
+      { 0,  0,  -1} }
 #endif 
       
 #define YAMAHA_IOCTL_GET_MARRAY            _IOR('Y', 0x01, char[9])
