@@ -712,7 +712,11 @@ static int sec_jack_probe(struct platform_device *pdev)
 	s3c_gpio_setpull(det_jack->gpio, S3C_GPIO_PULL_NONE);
 	set_irq_type(det_jack->eint, IRQ_TYPE_EDGE_BOTH);
 
-	det_jack->low_active = 0; 
+#if defined(CONFIG_SAMSUNG_CAPTIVATE)	
+	det_jack->low_active = 0;
+#else
+	det_jack->low_active = 1;
+#endif
 
 	ret = request_irq(det_jack->eint, detect_irq_handler, IRQF_DISABLED, "sec_headset_detect", NULL);
 
