@@ -1,7 +1,7 @@
 /*
  * Automatically generated C config: don't edit
  * Linux kernel version: 2.6.32.9
- * Tue Mar  1 15:54:19 2011
+ * Fri Mar 18 11:28:01 2011
  */
 #define AUTOCONF_INCLUDED
 #define CONFIG_MMC_SDHCI_S3C_DMA 1
@@ -681,7 +681,7 @@
 #define CONFIG_SND_ARIES_SOC_WM8994 1
 #define CONFIG_VIDEO_V4L1 1
 #define CONFIG_MMC 1
-#define CONFIG_INITRAMFS_SOURCE "/home/mxracer/Ursa-Minor/9010initramfs/full-uncompressed/"
+#define CONFIG_INITRAMFS_SOURCE "../9010initramfs/full-uncompressed/"
 #define CONFIG_VIDEO_V4L2 1
 #define CONFIG_S3C_DEV_HSMMC 1
 #define CONFIG_BUG 1

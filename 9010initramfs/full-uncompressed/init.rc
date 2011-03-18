@@ -1,3 +1,5 @@
+#SKULLCAP
+
 on init
 
 sysclktz 0
@@ -256,9 +258,7 @@ loglevel 3
     insmod /lib/modules/storage.ko
     insmod /lib/modules/bthid.ko
     
-    # mount logger module
-    #insmod /lib/modules/logger.ko
-
+    
     # permissions for MTP device node
     chmod 0777 /dev/usb_mtp_gadget
     
@@ -283,7 +283,7 @@ loglevel 3
     mount rootfs rootfs / ro remount
     chmod 0662 /dev/log/events
     chmod 0662 /dev/log/system
-
+    
 on boot
 # basic network init
     ifup lo
@@ -462,7 +462,7 @@ service console /system/bin/sh
     user shell
     group shell system log
     console
-
+    
 service noplaylogos /system/bin/false
     user root
     oneshot
@@ -706,4 +706,7 @@ service blnpatch /sbin/install_bln_liblights.sh
 	disabled
 
 /* end init.rc lines */
+
+
+
 

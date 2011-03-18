@@ -90,6 +90,81 @@ mkdir -p $log_dir
 echo "\nRunning Voodoo init:"
 /voodoo/scripts/init.sh 2>&1 | tee $log_dir/init_log.txt > /voodoo/logs/init_log.txt
 
+#SKULLCAP
+
+# Enable android logger
+if test -e /sdcard/enable_debug; then
+  insmod /lib/modules/logger.ko
+else
+  rm /lib/modules/logger.ko
+fi
+
+#tweak ipv6
+echo "2" > /proc/sys/net/ipv6/conf/all/use_tempaddr
+
+# run fs tweaks
+# Tweak cfq io scheduler
+for i in $(ls -1 /sys/block/stl*) $(ls -1 /sys/block/mmc*) $(ls -1 /sys/block/bml*) $(ls -1 /sys/block/tfsr*)
+do echo "0" > $i/queue/rotational
+  echo "1" > $i/queue/iosched/low_latency
+      echo "2" > $i/queue/iosched/slice_idle
+      #echo "8" > $i/queue/iosched/quantum
+  echo "1" > $i/queue/iosched/back_seek_penalty
+  echo "1000000000" > $i/queue/iosched/back_seek_max
+done
+
+# Remount all partitions with noatime
+for k in $(mount | grep relatime | cut -d " " -f3)
+do
+      sync
+      mount -o remount,noatime $k
+done
+
+# Tweak kernel VM management
+echo "0" > /proc/sys/vm/swappiness
+#echo "10" > /proc/sys/vm/dirty_ratio
+#echo "1000" > /proc/sys/vm/vfs_cache_pressure
+#echo "4096" > /proc/sys/vm/min_free_kbytes
+
+# Tweak kernel scheduler
+#echo "18000000" > /proc/sys/kernel/sched_latency_ns;
+#echo "1500000" > /proc/sys/kernel/sched_min_granularity_ns;
+#echo "3000000" > /proc/sys/kernel/sched_wakeup_granularity_ns;
+
+# Miscellaneous tweaks
+echo "2000" > /proc/sys/vm/dirty_writeback_centisecs
+echo "1000" > /proc/sys/vm/dirty_expire_centisecs
+
+# Enable CIFS tweak
+insmod /lib/modules/cifs.ko
+
+# Enable TUN tweak
+insmod /lib/modules/tun.ko
+
+echo $(date) Unloading and deleting unused modules...
+# unload un-needed filesystem modules
+if [ -z "`/res/mount | grep jfs`" ]; then
+	rmmod jfs
+	rm /lib/modules/jfs.ko
+fi
+if [ -z "`/res/mount | grep ext3`" ]; then
+	rmmod ext3
+	rmmod jbd
+	rm /lib/modules/ext3.ko
+	rm /lib/modules/jbd.ko
+fi
+if [ -z "`/res/mount | grep ext4`" ]; then
+	rmmod ext4
+	rmmod jbd2
+	rm /lib/modules/ext4.ko
+	rm /lib/modules/jbd2.ko
+fi
+#if [ -z "`/res/mount | grep ext2`" ]; then
+#	rmmod ext2
+#	rm /lib/modules/ext2.ko
+#fi
+
+#END SKULLCAP
 
 # umount the sdcard before running Samsung's init and restore its state
 umount /sdcard && rm -r sdcard
