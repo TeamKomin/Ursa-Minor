@@ -61,12 +61,12 @@ cd ../ursaminorflash/
 zip -r ../ursaminorflash *
 } || { echo "failed to create zip"; exit 1; }
 
-echo -n "copying zip to the phone "
-{
-cd ..
-echo "kernel version is $(cat Kernel/.version)" 
-adb push ursaminorflash.zip /sdcard/sgs-kernel-flasher/ursaminorflash.zip
-} || { echo "failed to copy zip to phone"; }
+#echo -n "copying zip to the phone "
+#{
+#cd ..
+#echo "kernel version is $(cat Kernel/.version)" 
+#adb push ursaminorflash.zip /sdcard/sgs-kernel-flasher/ursaminorflash.zip
+#} || { echo "failed to copy zip to phone"; }
 
 END=$(date +%s)
 ELAPSED=$((END - START))
