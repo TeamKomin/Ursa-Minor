@@ -61,6 +61,9 @@ cd ../ursaminorflash/
 zip -r ../ursaminorflash *
 } || { echo "failed to create zip"; exit 1; }
 
+cd ..
+echo "kernel version is $(cat Kernel/.version)" 
+
 #echo -n "copying zip to the phone "
 #{
 #cd ..

@@ -31,7 +31,7 @@ loglevel 3
     insmod /lib/modules/vibrator.ko
 
 	# ko files for Fm radio
-	insmod /lib/modules/Si4709_driver.ko
+	#insmod /lib/modules/Si4709_driver.ko
 	
 #add booting sound property 
 	setprop audioflinger.bootsnd 1
@@ -110,7 +110,8 @@ loglevel 3
     chown system system /dev/cpuctl/bg_non_interactive/tasks
     chmod 0777 /dev/cpuctl/bg_non_interactive/tasks
     # 5.0 %
-    write /dev/cpuctl/bg_non_interactive/cpu.shares 52
+    #changed from 52 to 37 for better battery life?
+    write /dev/cpuctl/bg_non_interactive/cpu.shares 37 
 
 # mount mtd partitions
     # Mount /system rw first to give the filesystem a chance to save a checkpoint
