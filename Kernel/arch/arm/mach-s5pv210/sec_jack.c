@@ -170,7 +170,7 @@ static int jack_type_detect_change(struct work_struct *ignored)
 			adc = s3c_adc_get_adc_data(SEC_HEADSET_ADC_CHANNEL);
 			/*  unstable zone */
 #if !defined(CONFIG_ARIES_NTT)
-			if(adc > 3250)
+			if(adc > 3250 || adc == 0) //SKULLCAP 3-pole headphone is 0
 #else
 			if(adc > 3600)
 #endif
@@ -712,7 +712,7 @@ static int sec_jack_probe(struct platform_device *pdev)
 	s3c_gpio_setpull(det_jack->gpio, S3C_GPIO_PULL_NONE);
 	set_irq_type(det_jack->eint, IRQ_TYPE_EDGE_BOTH);
 
-	det_jack->low_active = 0;
+	det_jack->low_active = 0; 
 
 	ret = request_irq(det_jack->eint, detect_irq_handler, IRQF_DISABLED, "sec_headset_detect", NULL);
 

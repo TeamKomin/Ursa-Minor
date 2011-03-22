@@ -54,7 +54,7 @@
 // Normal
 // Speaker
 #define TUNING_MP3_SPKL_VOL		0x3E		// 26h
-#define TUNING_MP3_CLASSD_VOL		0x5		// 25h
+#define TUNING_MP3_CLASSD_VOL		0x06 //0x5		// 25h //boost speaker volume
 
 // Headset
 #if defined(CONFIG_ARIES_LATONA)
@@ -109,15 +109,15 @@
 // Receiver
 #define TUNING_RCV_OUTMIX5_VOL		0x0		// 31h
 #define TUNING_RCV_OUTMIX6_VOL 		0x0		// 32h
-#define TUNING_RCV_OPGAL_VOL		0x3D		// 20h
-#define TUNING_RCV_OPGAR_VOL		0x3D		// 21h
+#define TUNING_RCV_OPGAL_VOL		0x3F //0x3D		// 20h //boost earpiece volume during calls
+#define TUNING_RCV_OPGAR_VOL		0x3F //0x3D		// 21h
 #define TUNING_HPOUT2_VOL		0x0		// 1Fh
 
 // Call Main MIC
 #if defined(CONFIG_ARIES_LATONA)
 #define TUNING_CALL_RCV_INPUTMIX_VOL	0x0E		// 18h //[0x16 -> 0x0E] LATONA1 HW request (10/7)
 #else
-#define TUNING_CALL_RCV_INPUTMIX_VOL	0x16		// 18h
+#define TUNING_CALL_RCV_INPUTMIX_VOL	0x14 //0x12 K12J-O //0x16		// 18h //reduce mic level during calls to fix distortion
 #endif  //CONFIG_ARIES_LATONA
 #define TUNING_CALL_RCV_MIXER_VOL	WM8994_IN1L_MIXINL_VOL	// 29h 30dB
 
@@ -193,7 +193,7 @@
 #if defined(CONFIG_ARIES_LATONA)
 #define TUNING_RECORD_MAIN_INPUTLINE_VOL	0x19		// 18h   //[0x18 -> 0x19] LATONA1 HW request (10/7)
 #else
-#define TUNING_RECORD_MAIN_INPUTLINE_VOL	0x18		// 18h
+#define TUNING_RECORD_MAIN_INPUTLINE_VOL	0x12 //0x18		// 18h //reduce mic level during recording to fix distortion
 #endif  //CONFIG_ARIES_LATONA
 #define TUNING_RECORD_MAIN_AIF1ADCL_VOL	0xC0		// 400h
 #define TUNING_RECORD_MAIN_AIF1ADCR_VOL	0xC0		// 401h
@@ -2500,7 +2500,12 @@ void wm8994_set_voicecall_headphone(struct snd_soc_codec *codec)
 	wm8994_set_voicecall_common_setting(codec);
 	
 	/*Digital Path Enables and Unmutes*/	
-	if(wm8994->hw_version == 3)	// H/W Rev D
+	wm8994_write(codec,0x601, 0x0005 );   
+	wm8994_write(codec,0x602, 0x0005 );   
+	wm8994_write(codec,0x603, 0x000C );   
+	// Tx -> AIF2 Path
+	wm8994_write(codec, WM8994_DAC2_LEFT_MIXER_ROUTING, WM8994_ADC1_TO_DAC2L);
+	/*if(wm8994->hw_version == 3)	// H/W Rev D
 	{
 		wm8994_write(codec, WM8994_DAC2_LEFT_MIXER_ROUTING, WM8994_ADC2_TO_DAC2L);
 		wm8994_write(codec,WM8994_DAC2_MIXER_VOLUMES, 0x0180);
@@ -2511,13 +2516,15 @@ void wm8994_set_voicecall_headphone(struct snd_soc_codec *codec)
 		wm8994_write(codec,WM8994_DAC2_MIXER_VOLUMES, 0x000C);  
 		wm8994_write(codec, WM8994_DAC2_LEFT_MIXER_ROUTING, WM8994_ADC1_TO_DAC2L);
 		wm8994_write(codec,WM8994_SIDETONE, 0x01C1);
-	}
+	}*/
+
 	/*Analogue Input Configuration*/
-	val = wm8994_read(codec,WM8994_POWER_MANAGEMENT_2);	
+	/*val = wm8994_read(codec,WM8994_POWER_MANAGEMENT_2);	
 	val &= ~(WM8994_TSHUT_ENA_MASK | WM8994_TSHUT_OPDIS_MASK | WM8994_MIXINR_ENA_MASK | WM8994_IN1R_ENA_MASK);
 	val |= (WM8994_TSHUT_ENA | WM8994_TSHUT_OPDIS | WM8994_MIXINL_ENA | WM8994_IN1L_ENA);
-	wm8994_write(codec,WM8994_POWER_MANAGEMENT_2, 0x6110);
-	
+	wm8994_write(codec,WM8994_POWER_MANAGEMENT_2, 0x6110);*/
+
+	wm8994_write(codec,0x02, 0x6240 );
 	wm8994_write(codec, WM8994_INPUT_MIXER_2, WM8994_IN1LP_TO_IN1L | WM8994_IN1LN_TO_IN1L); 	// differential(3) or single ended(1)
 
 	if(!wm8994->testmode_config_flag)
@@ -2525,7 +2532,8 @@ void wm8994_set_voicecall_headphone(struct snd_soc_codec *codec)
 		// Volume Control - Input
 		val = wm8994_read(codec, WM8994_INPUT_MIXER_3);
 		val&= ~(WM8994_IN1L_TO_MIXINL_MASK | WM8994_IN1L_MIXINL_VOL_MASK | WM8994_MIXOUTL_MIXINL_VOL_MASK);
-		val |= (WM8994_IN1L_TO_MIXINL | TUNING_CALL_SPK_MIXER_VOL);//0db
+		//val |= (WM8994_IN1L_TO_MIXINL | TUNING_CALL_SPK_MIXER_VOL);//0db
+                val |= (WM8994_IN1L_TO_MIXINL | TUNING_CALL_RCV_MIXER_VOL);
 		wm8994_write(codec, WM8994_INPUT_MIXER_3, val); 
 	
 		val = wm8994_read(codec, WM8994_LEFT_LINE_INPUT_1_2_VOLUME );	
@@ -2548,7 +2556,8 @@ void wm8994_set_voicecall_headphone(struct snd_soc_codec *codec)
 		wm8994_write(codec,WM8994_RIGHT_OPGA_VOLUME, val );
 	}
 		
-	wm8994_write(codec,WM8994_POWER_MANAGEMENT_4, 0x2001 );   
+	//wm8994_write(codec,WM8994_POWER_MANAGEMENT_4, 0x2001 );   
+	wm8994_write(codec, WM8994_POWER_MANAGEMENT_4, WM8994_AIF2ADCL_ENA | WM8994_ADCL_ENA);
 	
 	val = wm8994_read(codec, 0x102  ); 	
 	val &= ~(0x0003);
