@@ -1,4 +1,4 @@
-#
+# voodoo color fix added
 # S3C Video configuration
 #
 
@@ -67,6 +67,27 @@ config FB_S3C_Y_VRES
 	default "1080"
 	help
 	  This indicates var.yres_virtual which has to be bigger than var.yres.
+
+config VOODOO_COLOR_GAMMA_22_ONLY
+        bool "Voodoo color: improve gamma in videos"
+        depends on FB_S3C_TL2796
+        default y
+        ---help---
+          This enables Voodoo color gamma curve optimization in videos
+
+config VOODOO_MDNIE
+        bool "Voodoo color: mDNIe sharpness and color enhancements"
+        depends on FB_S3C_MDNIE
+        default y
+        ---help---
+          This enables Voodoo color mDNIe tweaks
+
+config VOODOO_MDNIE_VIDEOS_ALT_PRESETS
+        bool "Also replace Warm & Cold Video presets by Boost and Soft"
+        depends on VOODOO_MDNIE
+        default y
+        ---help---
+          This enables Voodoo color mDNIe useful alternative presets used by Samsung video player
 
 choice
 depends on FB_S3C
@@ -153,3 +174,4 @@ config FB_S3C_CMC623
 	default "0"
 	---help---
 	This enables support for Samsung CMC623 feature
+ 
