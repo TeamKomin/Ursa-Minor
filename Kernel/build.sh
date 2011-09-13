@@ -9,6 +9,10 @@ case "$DEVICE" in
 		make clean
 		exit
 		;;
+	mrproper)
+		make mrproper
+		exit
+		;;
 	captivate)
 		cfg=ga3_eur_defconfig
 		;;
@@ -31,6 +35,13 @@ case "$DEVICE" in
 		exit 2
 		;;
 esac
+
+# Ensure basic initramfs structure is there
+for i in /data /dev /proc /sys /system /voodoo/logs /voodoo/tmp; do
+	if [ ! -d ../9010initramfs/full-uncompressed$i ]; then
+		mkdir ../9010initramfs/full-uncompressed$i
+	fi
+done
 
 #export KBUILD_BUILD_VERSION="1.0.0"
 echo "Using config ${cfg}"
