@@ -36,7 +36,7 @@ backlightnotification
 samsunglogo
 
 #Ignore the flash update kernel
-skullcapflash/updates/zImage
+ursaminorflash/updates/zImage
 
 ursaminorflash.zip
 
