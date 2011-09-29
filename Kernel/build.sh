@@ -3,6 +3,7 @@
 START=$(date +%s)
 
 DEVICE="$1"
+cfg=
 
 case "$DEVICE" in
 	clean)
@@ -11,6 +12,10 @@ case "$DEVICE" in
 		;;
 	mrproper)
 		make mrproper
+		exit
+		;;
+	distclean)
+		make distclean
 		exit
 		;;
 	captivate)
@@ -44,18 +49,26 @@ for i in /data /dev /proc /sys /system /voodoo/logs /voodoo/tmp /voodoo/tmp/mnt 
 done
 
 #export KBUILD_BUILD_VERSION="1.0.0"
-echo "Using config ${cfg}"
+if [ -n "$cfg" ]; then
+	echo "Using config ${cfg}"
 
-make ${cfg}  || { echo "Failed to make config"; exit 1; }
-make -j $(grep 'processor' /proc/cpuinfo | wc -l) || { echo "Failed to make kernel"; exit 1; }
+	make ${cfg}  || { echo "Failed to make config"; exit 1; }
+fi
 
-echo -n "Copying Kernel and Modules to device tree..."
+echo "Making Kernel Modules..."
+make modules -j $(grep 'processor' /proc/cpuinfo | wc -l) || { echo "Failed to make kernel modules"; exit 1; }
+echo "done."
+
+echo -n "Copying Kernel Modules to initramfs..."
 {
-#cp arch/arm/boot/zImage ../../../device/samsung/$DEVICE/zImage
 cp drivers/net/tun.ko ../9010initramfs/full-uncompressed/lib/modules/tun.ko
 #cp drivers/net/wireless/bcm4329/bcm4329.ko ../../../device/samsung/$DEVICE/bcm4329.ko
 cp fs/cifs/cifs.ko ../9010initramfs/full-uncompressed/lib/modules/cifs.ko
-} || { echo "failed to copy kernel and modules"; exit 1; }
+} || { echo "failed to copy kernel modules"; exit 1; }
+echo "done."
+
+echo "Making Kernel Image..."
+make zImage -j $(grep 'processor' /proc/cpuinfo | wc -l) || { echo "Failed to make kernel image"; exit 1; }
 echo "done."
 
 echo -n "copying zImage to flash dir"
