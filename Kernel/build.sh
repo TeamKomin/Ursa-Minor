@@ -37,7 +37,7 @@ case "$DEVICE" in
 esac
 
 # Ensure basic initramfs structure is there
-for i in /data /dev /proc /sys /system /voodoo/logs /voodoo/tmp; do
+for i in /data /dev /proc /sys /system /voodoo/logs /voodoo/tmp /voodoo/tmp/mnt /voodoo/tmp/sdcard; do
 	if [ ! -d ../9010initramfs/full-uncompressed$i ]; then
 		mkdir ../9010initramfs/full-uncompressed$i
 	fi
