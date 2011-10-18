@@ -455,7 +455,7 @@ on boot
          
  # +++++++++++++++++++++++++++++++++++++++++++
  
-  # sd card read speed fix
+ # sd card read speed fix
 write /sys/block/mmcblk0/bdi/read_ahead_kb 4096
 
     class_start default
